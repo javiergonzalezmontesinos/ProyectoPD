@@ -12,12 +12,12 @@
 #include <time.h>
 
 // Configuración WiFi
-const char* ssid = "xxxx";
-const char* password = "xxxx";
+const char* ssid = "ASUS-RT-AC1200G_24G";
+const char* password = "56Nyf83PMXjSj7G";
 
 // Configuración Telegram
-#define BOT_TOKEN "xxxx"
-#define CHAT_ID "xxxx"
+#define BOT_TOKEN "7700730321:AAFzPsEHbS2P6Q7yNkI3QL3Zg03_UDI7n40"
+#define CHAT_ID "12626253"
 
 // Configuración NTP
 const char* ntpServer = "pool.ntp.org";
@@ -647,6 +647,7 @@ void handleRoot(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud recibida para /");
   String html = "<!DOCTYPE html><html lang='es'><head>";
   html += "<meta charset='UTF-8'>";
+  html += "<title>Panel de Control</title>";
   html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
   html += "<style>body{font-family:Arial; text-align:center;} .card{background:#f2f2f2; border-radius:10px; padding:20px; margin:10px; display:inline-block; width:200px;}";
   html += "input[type=number],input[type=text]{width:100px; padding:5px; margin:5px;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}";
@@ -704,8 +705,8 @@ void handleAddUser(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud recibida para /addUser");
   String html = "<!DOCTYPE html><html lang='es'><head>";
   html += "<meta charset='UTF-8'>";
+  html += "<title>Panel de Control</title>";
   html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
-  html += "<title>Añadir Usuario</title>";
   html += "<style>";
   html += "body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }";
   html += ".card { background: #f5f5f5; border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 400px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }";
@@ -757,6 +758,7 @@ void handleAddUserPost(AsyncWebServerRequest *request) {
   if (!request->hasParam("name", true)) {
     Serial.println("[WEB] Error: Nombre no proporcionado");
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Nombre obligatorio</h1><a href='/addUser'><button>Volver</button></a></body></html>";
@@ -772,6 +774,7 @@ void handleAddUserPost(AsyncWebServerRequest *request) {
   if (!usePin && !useRFID) {
     Serial.println("[WEB] Error: No se seleccionó ningún método de autenticación");
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Seleccione al menos un método de autenticación</h1><a href='/addUser'><button>Volver</button></a></body></html>";
@@ -782,6 +785,7 @@ void handleAddUserPost(AsyncWebServerRequest *request) {
   if (usePin && (pin.length() != 4 || pin.toInt() < 0 || pin.toInt() > 9999)) {
     Serial.println("[WEB] Error: PIN inválido");
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: PIN debe ser de 4 dígitos</h1><a href='/addUser'><button>Volver</button></a></body></html>";
@@ -798,9 +802,10 @@ void handleAddUserPost(AsyncWebServerRequest *request) {
     rfidTimeout = millis() + RFID_TIMEOUT_MS;
     Serial.println("[WEB] Esperando tarjeta RFID para usuario: " + name);
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;}</style>";
-    html += "</head><body><h1>Escanea la tarjeta RFID ahora</h1><p>Tiempo restante: 30 segundos</p><script>setTimeout(() => {window.location.href='/'}, 30000);</script></body></html>";
+    html += "</head><body><h1>Escanea la tarjeta RFID ahora</h1><p>Tiempo restante: 30 segundos</p><script>setTimeout(() => {window.location.href='/users'}, 30000);</script></body></html>";
     request->send(200, "text/html", html);
   } else {
     addUser(tempName, tempPin, tempUID);
@@ -812,6 +817,7 @@ void handleAddUserPost(AsyncWebServerRequest *request) {
 void handleEnterPin(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud recibida para /enterPin");
   String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+  html += "<title>Panel de Control</title>";
   html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
   html += "<style>body{font-family:Arial; text-align:center;} .card{background:#f2f2f2; border-radius:10px; padding:20px; margin:10px; display:inline-block; width:300px;}";
   html += "input[type=number]{width:200px; padding:5px; margin:5px;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}";
@@ -854,6 +860,7 @@ void handleEnterPinPost(AsyncWebServerRequest *request) {
         logAccess("PIN", enteredPin, "Acceso denegado", userName);
         sendTelegramNotification("[ACCESO] Denegado por PIN");
         String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+        html += "<title>Panel de Control</title>";
         html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
         html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
         html += "</head><body><h1>Acceso denegado</h1><p>PIN incorrecto.</p><a href='/enterPin'><button>Volver</button></a></body></html>";
@@ -861,6 +868,7 @@ void handleEnterPinPost(AsyncWebServerRequest *request) {
       }
     } else {
       String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+      html += "<title>Panel de Control</title>";
       html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
       html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
       html += "</head><body><h1>Error: PIN debe ser de 4 dígitos</h1><a href='/enterPin'><button>Volver</button></a></body></html>";
@@ -868,6 +876,7 @@ void handleEnterPinPost(AsyncWebServerRequest *request) {
     }
   } else {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: PIN no proporcionado</h1><a href='/enterPin'><button>Volver</button></a></body></html>";
@@ -878,6 +887,7 @@ void handleEnterPinPost(AsyncWebServerRequest *request) {
 void handleUsers(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud recibida para /users");
   String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+  html += "<title>Panel de Control</title>";
   html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
   html += "<style>body{font-family:Arial; text-align:center;} .card{background:#f2f2f2; border-radius:10px; padding:20px; margin:10px; display:inline-block; width:300px;}";
   html += "input[type=password]{width:200px; padding:5px; margin:5px;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}";
@@ -899,6 +909,7 @@ void handleUsersPost(AsyncWebServerRequest *request) {
     String pwd = request->getParam("password", true)->value();
     if (pwd == ADMIN_PASSWORD) {
       String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+      html += "<title>Panel de Control</title>";
       html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
       html += "<style>body{font-family:Arial; text-align:center;}";
       html += ".card{background:#f2f2f2; border-radius:10px; padding:20px; margin:10px auto; max-width:600px;}";
@@ -925,6 +936,7 @@ void handleUsersPost(AsyncWebServerRequest *request) {
       request->send(200, "text/html", html);
     } else {
       String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+      html += "<title>Panel de Control</title>";
       html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
       html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
       html += "</head><body><h1>Contraseña incorrecta</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -932,6 +944,7 @@ void handleUsersPost(AsyncWebServerRequest *request) {
     }
   } else {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Contraseña no proporcionada</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -943,6 +956,7 @@ void handleEditUserGet(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud recibida para /editUser");
   if (!request->hasParam("index")) {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Índice no proporcionado</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -953,6 +967,7 @@ void handleEditUserGet(AsyncWebServerRequest *request) {
   int index = request->getParam("index")->value().toInt();
   if (index < 0 || index >= numAuthorizedUsers) {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Índice inválido</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -962,8 +977,8 @@ void handleEditUserGet(AsyncWebServerRequest *request) {
 
   String html = "<!DOCTYPE html><html lang='es'><head>";
   html += "<meta charset='UTF-8'>";
+  html += "<title>Panel de Control</title>";
   html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
-  html += "<title>Editar Usuario</title>";
   html += "<style>";
   html += "body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }";
   html += ".card { background: #f5f5f5; border-radius: 10px; padding: 20px; margin: 20px auto; max-width: 400px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }";
@@ -1015,6 +1030,7 @@ void handleEditUserPost(AsyncWebServerRequest *request) {
   Serial.println("[WEB] Solicitud POST recibida para /editUser");
   if (!request->hasParam("index", true) || !request->hasParam("name", true)) {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Parámetros incompletos</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -1031,6 +1047,7 @@ void handleEditUserPost(AsyncWebServerRequest *request) {
 
   if (!usePin && !useRFID) {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Seleccione al menos un método de autenticación</h1><a href='/editUser?index=" + String(index) + "'><button>Volver</button></a></body></html>";
@@ -1040,6 +1057,7 @@ void handleEditUserPost(AsyncWebServerRequest *request) {
 
   if (usePin && (pin.length() != 4 || pin.toInt() < 0 || pin.toInt() > 9999)) {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: PIN debe ser de 4 dígitos</h1><a href='/editUser?index=" + String(index) + "'><button>Volver</button></a></body></html>";
@@ -1055,6 +1073,7 @@ void handleEditUserPost(AsyncWebServerRequest *request) {
     tempUID = "";
     Serial.println("[WEB] Esperando tarjeta RFID para editar usuario: " + name);
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;}</style>";
     html += "</head><body><h1>Escanea la tarjeta RFID ahora</h1><p>Tiempo restante: 30 segundos</p><script>setTimeout(() => {window.location.href='/users'}, 30000);</script></body></html>";
@@ -1077,6 +1096,7 @@ void handleDeleteUser(AsyncWebServerRequest *request) {
       request->redirect("/users");
     } else {
       String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+      html += "<title>Panel de Control</title>";
       html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
       html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
       html += "</head><body><h1>Error: Índice inválido</h1><a href='/users'><button>Volver</button></a></body></html>";
@@ -1084,6 +1104,7 @@ void handleDeleteUser(AsyncWebServerRequest *request) {
     }
   } else {
     String html = "<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'>";
+    html += "<title>Panel de Control</title>";
     html += "<meta name='viewport' content='width=device-width, initial-scale=1'>";
     html += "<style>body{font-family:Arial; text-align:center;} button{padding:10px 20px; border-radius:5px; border:none; background:#4CAF50; color:white; cursor:pointer;}</style>";
     html += "</head><body><h1>Error: Índice no proporcionado</h1><a href='/users'><button>Volver</button></a></body></html>";
