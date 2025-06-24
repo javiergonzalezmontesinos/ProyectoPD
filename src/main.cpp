@@ -12,8 +12,8 @@
 #include <time.h>
 
 // Configuración WiFi
-const char* ssid = "ASUS-RT-AC1200G_24G";
-const char* password = "56Nyf83PMXjSj7G";
+const char* ssid = "xxxx";
+const char* password = "xxxx";
 
 // Configuración Telegram
 #define BOT_TOKEN "7700730321:AAFzPsEHbS2P6Q7yNkI3QL3Zg03_UDI7n40"
