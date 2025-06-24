@@ -12,12 +12,12 @@
 #include <time.h>
 
 // Configuración WiFi
-const char* ssid = "ASUS-RT-AC1200G_24G";
-const char* password = "56Nyf83PMXjSj7G";
+const char* ssid = "xxxx";
+const char* password = "xxxx";
 
 // Configuración Telegram
-#define BOT_TOKEN "7700730321:AAFzPsEHbS2P6Q7yNkI3QL3Zg03_UDI7n40"
-#define CHAT_ID "12626253"
+#define BOT_TOKEN "xxxx"
+#define CHAT_ID "xxxx"
 
 // Configuración NTP
 const char* ntpServer = "pool.ntp.org";
@@ -86,7 +86,8 @@ LEDState currentLEDState = RED;
 
 // Variables para el parpadeo
 unsigned long previousMillis = 0;
-const long blinkInterval = 500; // Intervalo de parpadeo en ms
+const long BLINK_INTERVAL_RED = 200; // Intervalo de parpadeo rápido para rojo (ms)
+const long BLINK_INTERVAL_GREEN = 300; // Intervalo de parpadeo moderado para verde (ms)
 
 // Variables para parpadeo del LED integrado
 unsigned long lastBlink = 0;
@@ -569,9 +570,11 @@ void updateRGBStatus() {
   static bool ledOn = false;
   unsigned long currentMillis = millis();
   LEDState newLEDState;
+  long blinkInterval = 0; // Intervalo dinámico según el estado
 
   if (doorOpen && !relayState) {
     newLEDState = BLINKING_RED;
+    blinkInterval = BLINK_INTERVAL_RED; // 200ms para rojo parpadeante
     if (currentMillis - previousMillis >= blinkInterval) {
       previousMillis = currentMillis;
       ledOn = !ledOn;
@@ -586,7 +589,16 @@ void updateRGBStatus() {
     setLEDColor(strip.Color(255, 0, 0));
   } else if (relayState && !doorOpen) {
     newLEDState = GREEN;
-    setLEDColor(strip.Color(0, 255, 0));
+    blinkInterval = BLINK_INTERVAL_GREEN; // 300ms para verde parpadeante
+    if (currentMillis - previousMillis >= blinkInterval) {
+      previousMillis = currentMillis;
+      ledOn = !ledOn;
+      if (ledOn) {
+        setLEDColor(strip.Color(0, 255, 0));
+      } else {
+        setLEDColor(strip.Color(0, 0, 0));
+      }
+    }
   } else {
     newLEDState = YELLOW;
     setLEDColor(strip.Color(255, 255, 0));
@@ -598,7 +610,7 @@ void updateRGBStatus() {
         Serial.println("[LED] Estado cambiado a Rojo (Acceso restringido)");
         break;
       case GREEN:
-        Serial.println("[LED] Estado cambiado a Verde (Acceso concedido)");
+        Serial.println("[LED] Estado cambiado a Verde Parpadeante (Acceso concedido)");
         break;
       case YELLOW:
         Serial.println("[LED] Estado cambiado a Amarillo (Puerta abierta)");
