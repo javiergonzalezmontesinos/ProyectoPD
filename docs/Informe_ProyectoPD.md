@@ -168,6 +168,8 @@ Comunicación mediante BOT Telegram
 | Cierre eléctrico |  Primer terminal |  NO del relé 5V     | Recibe 12V DC cuando el relé está activado.|
 |                  |  Segundo terminal | Secundario del transformador AC | CCompleta el circuito AC con el transformador. |
 
+El coste total de todos los componentes usados para crear este control de accesos ronda los 60€ si no tenemos cuenta componentes como el cable usb de conexión, el router para tener conexión a Internet, etc.
+
 
 **Diagrama de bloques del proyecto**
 
@@ -228,6 +230,10 @@ Documentación: Realizar un informe detallado que explique todo el desarrollo de
 **Conclusiones**
 
 El sistema de control de acceso cumple con los objetivos establecidos, ofreciendo una solución robusta y versátil para la gestión de accesos. Las iteraciones realizadas para corregir errores de compilación, optimizar el historial, garantizar la codificación adecuada y mejorar el comportamiento del LED han resultado en un producto funcional y visualmente claro. Aunque el sistema es operativo, hay oportunidades de mejora, como optimizar la gestión de los recursos del ESP32, soportar más métodos de autenticación (por ejemplo reconocimiento facial o huella dactilar) o implementar encriptación para la comunicación web segura.
+
+Para finalizar, el código y todos los archivos/documentos relacionados han sido subidos a GitHub y se puede acceder al repositorio a través del siguiente enlace: 
+
+[Repositorio GitHub ProyectoPD (rama master)](https://github.com/javiergonzalezmontesinos/ProyectoPD)
 
 **Recomendaciones para Futuras Mejoras**
 
